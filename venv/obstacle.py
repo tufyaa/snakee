@@ -1,7 +1,11 @@
 import pygame
 
+# в этом файле сохдается патерн препятствий
+
+# для первого уровня
 obstacle0 = []
 
+# второго
 obstacle1 = []
 
 obstacle1.append((2, 2))
@@ -21,6 +25,7 @@ obstacle1.append((17, 16))
 obstacle1.append((16, 17))
 obstacle1.append((17, 17))
 
+# третьего
 obstacle2 = []
 
 for i in range(3, 17):
@@ -39,6 +44,7 @@ for i in range(4):
     obstacle3.append((17, 17 - i))
     obstacle3.append((17 - i, 17))
 
+# четвертого
 obstacle4 = []
 
 for i in range(3, 17):

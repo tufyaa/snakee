@@ -4,16 +4,16 @@ import obstacle
 
 import sys
 
-
+# это главное меню, его описание и его старт
 init()
 
-
+# считывает из файла рекорд
 with open('venv\score.txt', 'r+') as f:
     score1 = int(f.readline())
     score2 = int(f.readline())
     score3 = int(f.readline())
 
-
+# шрифты и тому подобное
 sc = display.set_mode((main.resolution, main.resolution))
 col = image.load('imag/pixil-frame-21.png')
 fo = font.SysFont("Arial", 35, bold=True)
@@ -36,6 +36,8 @@ sc3_rect.topleft = (235, 160)
 
 count = 0
 
+# функция которая меняет цвет змейки
+
 
 def change():
     global col
@@ -47,6 +49,8 @@ def change():
         col = image.load('imag/pixil-frame-21.png')
     count = count + 1
     main.snc = (col)
+
+# класс меню, чтобы на WASD передвигаться в меню
 
 
 class Menu:
@@ -78,6 +82,7 @@ class Menu:
         self.callback[self.current_option]()
 
 
+# самого меню
 menu = Menu()
 menu.append_option('Level 1', lambda: main.run(obstacle.obstacle0))
 menu.append_option('Level 2', lambda: main.run(obstacle.obstacle1))
@@ -90,6 +95,7 @@ menu.append_option("Quit", quit)
 
 running = True
 
+# главный цикл, который отрисовывает все и считывает нажатия
 while running:
     for ev in event.get():
         if ev.type == QUIT:
@@ -115,5 +121,3 @@ while running:
     sc.blit(sc3, sc3_rect)
 
     display.flip()
-
-# for first commit

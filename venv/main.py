@@ -83,6 +83,7 @@ def end_game(count):
 
 
 def run(obstacle):
+    # создаю нужные объекты и тд
     global fps
     global need_slow
     global need_fast
@@ -103,23 +104,31 @@ def run(obstacle):
     flag_fast = 0
     flag_slow = 0
 
+    # основный цикл, который отрисовывает все и тут прописано управление змейки и тд
     while True:
+        # заканчивает игруБ когда нажимается кнопка "крестик"(справа сверху)
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 pygame.quit()
                 sys.exit()
 
+        # отрисовка фона
         drawbg(bg)
+        # отрисовка блоковых бустов
         if need_Block_fast:
             Block_fast.draw(field)
         if need_Block_slow:
             Block_slow.draw(field)
+
+        # отрисовка препятствий
         drawobst(wh, obstacle)
 
+        # отрисовка змейки
         for cell in snake.body:
             x, y = cell
             draw1(snake.color, x, y)
 
+        # отрисовка обычных бустов
         if need_slow:
             draw1(slow.color, slow.x, slow.y)
         if need_fast:
@@ -128,20 +137,24 @@ def run(obstacle):
             draw1(multiapple.color, multiapple.x, multiapple.y)
         draw1(apple.color, apple.x, apple.y)
 
+        # отрисовывает score
         draw_score = font_score.render(
             f'SCORE : {apple.count}', 1, pygame.Color("orange"))
         field.blit(draw_score, (5, 5))
 
+        # передвежение змейки
         x += snake.vx
         y += snake.vy
         snake.body.append((x, y))
         snake.body = snake.body[-snake.len:]
 
+        # проверка на столкновения с препятствиями и с телом змеи
         if (len(set(snake.body)) != apple.count + 1 or snake.body[-1][0] < 0 or snake.body[-1][0] > sizefield - 1 or snake.body[-1][1] < 0 or snake.body[-1][1] > sizefield - 1):
             end_game(apple.count)
         if (snake.body[-1] in obstacle):
             end_game(apple.count)
 
+        # генерация различных объектов
         if (snake.body[-1] == apple.coords):
             apple.new(snake.body, obstacle)
             apple.count += 1
@@ -165,13 +178,13 @@ def run(obstacle):
                 need_multiapple = True
                 multiapple.new(snake.body, obstacle)
 
+        # съедение объектов
         if (snake.body[-1] == slow.coords):
             need_slow = False
             fps = fps - 1
         if (snake.body[-1] == fast.coords):
             need_fast = False
             fps = fps + 1
-
         if (snake.body[-1] == multiapple.coords):
             need_multiapple = False
             apple.count += 1
@@ -179,6 +192,7 @@ def run(obstacle):
 
         pygame.display.flip()
 
+        # проверка на "нахождение в блоковом бусте"
         if (snake.body[-1] in Block_fast.body and apple.count >= 1 and flag_fast == 0):
             flag_fast = 1
 
@@ -191,6 +205,7 @@ def run(obstacle):
         elif (not (snake.body[-1] in Block_slow.body) and apple.count >= 1 and flag_slow == 1):
             flag_slow = 0
 
+        # изменение скорости на блоковом бусте
         if (flag_fast == 1):
             clock.tick(fps * 4)
             print("fast")
@@ -200,6 +215,7 @@ def run(obstacle):
         else:
             clock.tick(fps)
 
+        # управление змейкой
         key = pygame.key.get_pressed()
         if key[pygame.K_w] and not (snake.vx == 0 and snake.vy == 1):
             snake.vx, snake.vy = 0, -1
